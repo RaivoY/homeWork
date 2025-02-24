@@ -1,0 +1,116 @@
+<!-- === UZDEVUMI ===
+1.uzd: Jāsalabo aplikācija, kas aprēķina studenta vērtējumu, pamatojoties uz iegūtajiem punktiem un maksimālo punktu skaitu.
+2.uzd: Jāveic aplikācijas refaktorēšana, lai lietotāja ievades pārbaude (validācija) un atbildes kalkulācija tiktu veiktas atsevišķās funkcijās.
+3.uzd: Papildināt aplikāciju ar jaunu funkcionalitāti “Vēsture”, kas saglabātu lietotāja veiktās kalkulācijas un izvadītu tās sarakstā zem rezultāta izvades.
+Vēsturei ir jāsaglabājas pēc lapas pārlādes.
+Katram vēstures ierakstam ir jasatur vārds un veiktā aprēķina rezultāts.
+Lietotājs var dzēst katru vēstures ierakstu.
+Zem vēstures ir jāizvada visu ierakstu vidējais rezultāts procentos. -->
+
+<!DOCTYPE html>
+<html lang="lv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grade Calculator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      #result {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Grade Calculator</h1>
+    <label for="name">Vārds:</label>
+    <input type="text" id="name" required /><br /><br />
+
+    <label for="points">Iegūtie punkti:</label>
+    <input type="number" id="points" required /><br /><br />
+
+    <label for="max-points">Maksimālais punktu skaits:</label>
+    <input type="number" id="max-points" required /><br /><br />
+
+    <label for="grading-scheme">Vērtēšanas shēma:</label>
+    <select id="grading-scheme">
+      <option value="percentage">Procentuālā vērtība (0-100)</option>
+      <option value="letter">Burtu vērtējums (A, B, C utt.)</option></select
+    ><br /><br />
+
+    <button id="calculate-btn">Aprēķināt vērtējumu</button>
+    <div id="result"></div>
+
+    <script>
+      const calculateBtn = document.getElementById("calculate-btn");
+      const nameInput = document.getElementById("name");
+      const pointsInput = document.getElementById("points");
+      const maxPointsInput = document.getElementById("max-points");
+      const gradingSchemeSelect = document.getElementById("grading-scheme");
+      const resultDiv = document.getElementById("result");
+
+      function handleClick() {
+        const name = nameInput.value;
+        const points = parseFloat(pointsInput.value);
+        const maxPoints = parseFloat(maxPointsInput.value);
+        const gradingScheme = gradingSchemeSelect.value;
+
+        function validation(name, points, maxPoints) {
+          if (!name || isNaN(points) || isNaN(maxPoints) || maxPoints <= 0) {
+            resultDiv.innerHTML = "Lūdzu, aizpildiet visus laukus pareizi.";
+            return;
+          }
+          if (points < 0 || points > maxPoints) {
+            resultDiv.innerHTML =
+              "Iegūtie punkti nedrīkst pārsniegt maksimālos punktus.";
+            return;
+          }
+        }
+
+        function calculateGrade(gradingScheme, points, maxPoints) {
+          let grade = "";
+          if (gradingScheme === "percentage") {
+            const percentage = (points / maxPoints) * 100;
+            grade = `Jūsu procentuālā vērtība ir: ${percentage.toFixed(2)}%`;
+            return grade;
+          } else if (gradingScheme === "letter") {
+            if (points >= 90) {
+              grade = "Jūsu burtu vērtējums ir: A";
+            } else if (points >= 80) {
+              grade = "Jūsu burtu vērtējums ir: B";
+            } else if (points >= 70) {
+              grade = "Jūsu burtu vērtējums ir: C";
+            } else if (points >= 60) {
+              grade = "Jūsu burtu vērtējums ir: D";
+            } else {
+              grade = "Jūsu burtu vērtējums ir: F";
+            }
+            return grade;
+          }
+        }
+        const grade = calculateGrade(gradingScheme, points, maxPoints);
+        resultDiv.innerHTML = grade;
+      }
+
+      calculateBtn.addEventListener("click", handleClick);
+
+      //   === TERMINI un KODA PIEMĒRI ===
+      // input, button, id, class, script, const, let, document, querySelector, getElementById,
+      // addEventListener, click, value, parseFloat, length, array, push, join, includes, classList,
+      // innerHTML, add, remove, toggle, NaN, isNaN, return, switch..case, if..else,
+      // for, while, localStorage, style, color
+      // document.createElement, appendChild, removeChild,
+      // event, event.target, parentNode, Date.now()
+
+      //   for (let key in localStorage) {
+      //     console.log(localStorage.getItem(key));
+      //   }
+      //
+      // JSON.stringify
+      // JSON.parse
+    </script>
+  </body>
+</html>
